@@ -53,6 +53,9 @@ class ConnectionManager: NSObject, ObservableObject, ClientProtocol {
         DispatchQueue.main.async { [self] in
             viewController?.addEntry(json: data)
         }
+        
+    
+        
     }
     
     func set(controller:ViewController?) {

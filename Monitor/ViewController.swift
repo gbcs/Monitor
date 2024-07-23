@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import UserNotifications
 
 class ViewController: NSViewController {
     let gridView = NSGridView(views: [
@@ -14,7 +15,15 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let center = UNUserNotificationCenter.current()
+
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+            if granted {
+                print("Notifications Enabled")
+            } else {
+                print("Notifications Not Available")
+            }
+        }
         gridView.translatesAutoresizingMaskIntoConstraints = false
         
         let scrollView = NSScrollView()
@@ -92,9 +101,22 @@ class ViewController: NSViewController {
                               ]
         )
         
+        
+        
         if gridView.numberOfRows > 1000 {
             gridView.removeRow(at: 0)
         }
+        
+        notifyUser(path: path, flags: decodedFlags)
+        
+    }
+    
+    func notifyUser(path:String, flags:String) {
+        let content = UNMutableNotificationContent()
+        content.title = "File Monitor"
+        content.body = path + " " + flags
+        let request = UNNotificationRequest(identifier: "com.gbcs.monitor.file", content: content, trigger: nil)
+        UNUserNotificationCenter.current().add(request)
     }
 }
 
