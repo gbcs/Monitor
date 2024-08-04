@@ -1,1 +1,2 @@
-Monitor project built as an assessment
+Monitor a directory and subpaths via an xpc service.
+
